@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jewelry Quote Calculator</title>
+    <style>
+        /* Remove arrows from number input fields in Chrome, Safari, Edge, and Opera */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Remove arrows from number input fields in Firefox */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* Style to make the total stand out */
+        #totalQuote, #grandTotalCAD {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .category-total {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* Ensure the page is scrollable */
+        body {
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Jewelry Quote Calculator</h2>
+  
+
+
+<!-- Metal Prices Section -->
+<div>
+    <h3>Current Metal Prices</h3>
+    <label for="goldPrice">Gold Price (per oz):</label>
+    <input type="number" id="goldPrice" placeholder="Enter gold price per oz"><br>
+    <label for="platinumPrice">Platinum Price (per oz):</label>
+    <input type="number" id="platinumPrice" placeholder="Enter platinum price per oz"><br>
+    <label for="silverPrice">Silver Price (per oz):</label>
+    <input type="number" id="silverPrice" placeholder="Enter silver price per oz"><br>
+</div>
+
+<!-- Customer Information -->
+<div>
+    <h3>Customer Information</h3>
+    <label for="customerName">Name:</label>
+    <input type="text" id="customerName" placeholder="Enter customer name"><br>
+    <label for="customerEmail">Email:</label>
+    <input type="email" id="customerEmail" placeholder="Enter customer email"><br>
+    <label for="customerPhone">Phone:</label>
+    <input type="text" id="customerPhone" placeholder="Enter customer phone"><br>
+    <label for="customerAddress">Address (Optional):</label>
+    <input type="text" id="customerAddress" placeholder="Enter customer address"><br>
+</div>
+
+<!-- Materials Section -->
+<div>
+    <h3>Materials <span id="materialsTotal" class="category-total">$0.00</span></h3>
+    <label for="metalType">Metal Type:</label>
+    <select id="metalType">
+        <option value="10K">10K</option>
+        <option value="14K">14K</option>
+        <option value="18K">18K</option>
+        <option value="22K">22K</option>
+        <option value="24K">24K</option>
+        <option value="Platinum 950">Platinum 950</option>
+        <option value="Sterling">Sterling Silver</option>
+    </select><br>
+
+    <label for="metalColor">Metal Color:</label>
+    <select id="metalColor">
+        <option value="Yellow">Yellow</option>
+        <option value="White">White</option>
+        <option value="Rose">Rose</option>
+    </select><br>
+
+    <label for="metalWeight">Metal Weight (grams):</label>
+    <input type="number" id="metalWeight" placeholder="Enter weight in grams"><br>
+    <label for="metalMarkup">Metal Markup Factor:</label>
+    <select id="metalMarkup">
+        <option value="2">2</option>
+        <option value="2.25">2.25</option>
+        <option value="2.5">2.5</option>
+        <option value="2.75">2.75</option>
+        <option value="3">3</option>
+    </select><br>
+</div>
+
+<!-- Gemstones Section -->
+<div>
+    <h3>Gemstones <span id="gemstonesTotal" class="category-total">$0.00</span></h3>
+    <label for="gemstoneType">Gemstone Type:</label>
+    <select id="gemstoneType">
+        <option value="sapphire">Sapphire</option>
+        <option value="ruby">Ruby</option>
+        <option value="emerald">Emerald</option>
+        <option value="diamond">Diamond</option>
+        <option value="garnet">Garnet</option>
+        <option value="amethyst">Amethyst</option>
+        <option value="custom">Custom</option>
+    </select><br>
+    <label for="gemstoneDetails">Gemstone Details/Notes:</label>
+    <textarea id="gemstoneDetails" placeholder="Enter gemstone details or notes"></textarea><br>
+    <label for="gemstoneQty">Quantity:</label>
+    <input type="text" id="gemstoneQty" placeholder="Enter gemstone quantity"><br>
+    <label for="gemstonePrice">Gemstone Price:</label>
+    <input type="number" id="gemstonePrice" placeholder="Enter gemstone price"><br>
+    <label for="gemstoneMarkup">Gemstone Markup Factor:</label>
+    <select id="gemstoneMarkup">
+        <option value="2">2</option>
+        <option value="2.25">2.25</option>
+        <option value="2.5">2.5</option>
+        <option value="2.75">2.75</option>
+        <option value="3">3</option>
+    </select><br>
+</div>
+
+<!-- Labor Section -->
+<div>
+    <h3>Labor Costs <span id="laborTotal" class="category-total">$0.00</span></h3>
+    <label for="laborHours">Labor Hours:</label>
+    <input type="number" id="laborHours" placeholder="Enter hours"><br>
+    <label for="laborRate">Hourly Rate:</label>
+    <input type="number" id="laborRate" placeholder="Enter hourly rate"><br>
+    <label for="serviceFees">Service Fees:</label>
+    <input type="number" id="serviceFees" placeholder="Enter service fees"><br>
+</div>
+
+<!-- Shipping and Insurance Section -->
+<div>
+    <h3>Shipping and Insurance</h3>
+    <label for="shippingCost">Shipping Cost:</label>
+    <input type="number" id="shippingCost" placeholder="Enter shipping cost"><br>
+</div>
+
+<!-- Subtotal, Tax, and Grand Total Section -->
+<div>
+    <h3>Subtotal <span id="subtotal" class="category-total">$0.00</span></h3>
+    <label for="taxRate">Tax Rate (%):</label>
+    <input type="number" id="taxRate" placeholder="Enter tax rate"><br>
+    <h3>Grand Total <span id="grandTotal" class="category-total">$0.00</span></h3>
+</div>
+
+<!-- CAD Conversion Section -->
+<div>
+    <h3>Grand Total in CAD</h3>
+    <label for="usdToCadMarkup">USD to CAD Markup:</label>
+    <input type="number" id="usdToCadMarkup" placeholder="Enter USD to CAD markup"><br>
+    <h3 id="grandTotalCAD">$0.00 CAD</h3>
+</div>
+  
+  <!-- Submit Button -->
+<button onclick="submitQuote()">Submit Quote</button>
+
+<!-- Reset Button -->
+<button onclick="resetForm()">Reset Form</button>
+
+<!-- Notes Section -->
+<div>
+    <h3>Notes</h3>
+    <textarea id="notes" placeholder="Enter additional notes"></textarea><br>
+</div> <br>
+  
+  
+<!-- Submit Button -->
+<button onclick="submitQuote()">Submit Quote</button>
+
+<!-- Reset Button -->
+<button onclick="resetForm()">Reset Form</button>
+
+
+<script>
+    function calculateMetalPricePerGram(metalType) {
+        const goldPrice = parseFloat(document.getElementById('goldPrice').value) || 0;
+        const platinumPrice = parseFloat(document.getElementById('platinumPrice').value) || 0;
+        const silverPrice = parseFloat(document.getElementById('silverPrice').value) || 0;
+
+        let pricePerGram = 0;
+
+        switch (metalType) {
+            case '10K':
+                pricePerGram = (goldPrice / 31.1035) * 0.4167;
+                break;
+            case '14K':
+                pricePerGram = (goldPrice / 31.1035) * 0.5833;
+                break;
+            case '18K':
+                pricePerGram = (goldPrice / 31.1035) * 0.75;
+                break;
+            case '22K':
+                pricePerGram = (goldPrice / 31.1035) * 0.9167;
+                break;
+            case '24K':
+                pricePerGram = goldPrice / 31.1035;
+                break;
+            case 'Platinum 950':
+                pricePerGram = platinumPrice / 31.1035;
+                break;
+            case 'Sterling':
+                pricePerGram = silverPrice / 31.1035;
+                break;
+            default:
+                pricePerGram = 0;
+                break;
+        }
+
+        return pricePerGram;
+    }
+
+    function calculateTotal() {
+        const metalType = document.getElementById('metalType').value;
+        const metalWeight = parseFloat(document.getElementById('metalWeight').value) || 0;
+        const metalMarkup = parseFloat(document.getElementById('metalMarkup').value);
+
+        const gemstoneQty = parseInt(document.getElementById('gemstoneQty').value) || 1;
+        const gemstonePrice = parseFloat(document.getElementById('gemstonePrice').value) || 0;
+        const gemstoneMarkup = parseFloat(document.getElementById('gemstoneMarkup').value);
+
+        const laborHours = parseFloat(document.getElementById('laborHours').value) || 0;
+        const laborRate = parseFloat(document.getElementById('laborRate').value) || 0;
+        const serviceFees = parseFloat(document.getElementById('serviceFees').value) || 0;
+
+        const shippingCost = parseFloat(document.getElementById('shippingCost').value) || 0;
+        const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+        const usdToCadMarkup = parseFloat(document.getElementById('usdToCadMarkup').value) || 1;
+
+        const metalPricePerGram = calculateMetalPricePerGram(metalType);
+        const totalMetalCost = (metalPricePerGram * metalWeight * metalMarkup) + (metalPricePerGram * metalWeight * 0.2);
+        const totalGemstoneCost = gemstoneQty * gemstonePrice * gemstoneMarkup;
+        const totalLaborCost = (laborHours * laborRate) + serviceFees;
+
+        const subtotal = totalMetalCost + totalGemstoneCost + totalLaborCost + shippingCost;
+        const totalTax = (taxRate / 100) * subtotal;
+        const grandTotal = subtotal + totalTax;
+        const grandTotalCAD = grandTotal * usdToCadMarkup;
+
+        document.getElementById('materialsTotal').innerText = `$${totalMetalCost.toFixed(2)}`;
+        document.getElementById('gemstonesTotal').innerText = `$${totalGemstoneCost.toFixed(2)}`;
+        document.getElementById('laborTotal').innerText = `$${totalLaborCost.toFixed(2)}`;
+        document.getElementById('subtotal').innerText = `$${subtotal.toFixed(2)}`;
+        document.getElementById('grandTotal').innerText = `$${grandTotal.toFixed(2)}`;
+        document.getElementById('grandTotalCAD').innerText = `$${grandTotalCAD.toFixed(2)} CAD`;
+    }
+
+    document.querySelectorAll('input, select, textarea').forEach(element => {
+        element.addEventListener('input', calculateTotal);
+    });
+
+    function submitQuote() {
+        let printWindow = window.open('', '_blank', 'width=800,height=600');
+        printWindow.document.write('<html><head><title>Quote Summary</title></head><body>');
+        printWindow.document.write('<h2>Quote Summary</h2>');
+
+        const customerName = document.getElementById('customerName').value;
+        const customerEmail = document.getElementById('customerEmail').value;
+        const customerPhone = document.getElementById('customerPhone').value;
+        const customerAddress = document.getElementById('customerAddress').value;
+        const metalType = document.getElementById('metalType').value;
+        const metalColor = document.getElementById('metalColor').value;
+        const metalWeight = parseFloat(document.getElementById('metalWeight').value) || 0;
+        const metalMarkup = parseFloat(document.getElementById('metalMarkup').value);
+
+        const gemstoneType = document.getElementById('gemstoneType').value;
+        const gemstoneDetails = document.getElementById('gemstoneDetails').value;
+        const gemstoneQty = parseInt(document.getElementById('gemstoneQty').value) || 1;
+        const gemstonePrice = parseFloat(document.getElementById('gemstonePrice').value) || 0;
+        const gemstoneMarkup = parseFloat(document.getElementById('gemstoneMarkup').value);
+
+        const laborHours = parseFloat(document.getElementById('laborHours').value) || 0;
+        const laborRate = parseFloat(document.getElementById('laborRate').value) || 0;
+        const serviceFees = parseFloat(document.getElementById('serviceFees').value) || 0;
+
+        const shippingCost = parseFloat(document.getElementById('shippingCost').value) || 0;
+        const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+        const usdToCadMarkup = parseFloat(document.getElementById('usdToCadMarkup').value) || 1;
+
+        const metalPricePerGram = calculateMetalPricePerGram(metalType);
+        const totalMetalCost = (metalPricePerGram * metalWeight * metalMarkup) + (metalPricePerGram * metalWeight * 0.2);
+        const totalGemstoneCost = gemstoneQty * gemstonePrice * gemstoneMarkup;
+        const totalLaborCost = (laborHours * laborRate) + serviceFees;
+
+        const subtotal = totalMetalCost + totalGemstoneCost + totalLaborCost + shippingCost;
+        const totalTax = (taxRate / 100) * subtotal;
+        const grandTotal = subtotal + totalTax;
+        const grandTotalCAD = grandTotal * usdToCadMarkup;
+
+        printWindow.document.write(`<p><strong>Customer Name:</strong> ${customerName}</p>`);
+        printWindow.document.write(`<p><strong>Email:</strong> ${customerEmail}</p>`);
+        printWindow.document.write(`<p><strong>Phone:</strong> ${customerPhone}</p>`);
+        if (customerAddress) {
+            printWindow.document.write(`<p><strong>Address:</strong> ${customerAddress}</p>`);
+        }
+        printWindow.document.write('<h3>Materials</h3>');
+        printWindow.document.write(`<p><strong>Metal Type:</strong> ${metalType} (${metalColor})</p>`);
+        printWindow.document.write(`<p><strong>Metal Weight:</strong> ${metalWeight} grams</p>`);
+        printWindow.document.write(`<p><strong>Total Metal Cost:</strong> $${totalMetalCost.toFixed(2)}</p>`);
+        printWindow.document.write('<h3>Gemstones</h3>');
+        printWindow.document.write(`<p><strong>Gemstone Type:</strong> ${gemstoneType}</p>`);
+        printWindow.document.write(`<p><strong>Details:</strong> ${gemstoneDetails}</p>`);
+        printWindow.document.write(`<p><strong>Quantity:</strong> ${gemstoneQty}</p>`);
+        printWindow.document.write(`<p><strong>Total Gemstone Cost:</strong> $${totalGemstoneCost.toFixed(2)}</p>`);
+        printWindow.document.write('<h3>Labor Costs</h3>');
+        printWindow.document.write(`<p><strong>Labor Hours:</strong> ${laborHours}</p>`);
+        printWindow.document.write(`<p><strong>Hourly Rate:</strong> $${laborRate.toFixed(2)}</p>`);
+        printWindow.document.write(`<p><strong>Total Labor Cost:</strong> $${totalLaborCost.toFixed(2)}</p>`);
+        printWindow.document.write('<h3>Shipping and Insurance</h3>');
+        printWindow.document.write(`<p><strong>Shipping Cost:</strong> $${shippingCost.toFixed(2)}</p>`);
+        printWindow.document.write('<h3>Summary</h3>');
+        printWindow.document.write(`<p><strong>Subtotal:</strong> $${subtotal.toFixed(2)}</p>`);
+        printWindow.document.write(`<p><strong>Tax:</strong> $${totalTax.toFixed(2)}</p>`);
+        printWindow.document.write(`<p><strong>Grand Total:</strong> $${grandTotal.toFixed(2)}</p>`);
+        printWindow.document.write(`<p><strong>Grand Total in CAD:</strong> $${grandTotalCAD.toFixed(2)} CAD</p>`);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+
+        window.location.href = `mailto:cyle@cylethomas.com?subject=New Jewelry Quote&body=The total quote is $${grandTotal.toFixed(2)} USD ($${grandTotalCAD.toFixed(2)} CAD).`;
+    }
+
+    function resetForm() {
+        document.getElementById('customerName').value = '';
+        document.getElementById('customerEmail').value = '';
+        document.getElementById('customerPhone').value = '';
+        document.getElementById('customerAddress').value = '';
+        document.getElementById('goldPrice').value = '';
+        document.getElementById('platinumPrice').value = '';
+        document.getElementById('silverPrice').value = '';
+        document.getElementById('metalType').value = '10K';
+        document.getElementById('metalColor').value = 'Yellow';
+        document.getElementById('metalWeight').value = '';
+        document.getElementById('metalMarkup').value = '2';
+        document.getElementById('gemstoneType').value = 'sapphire';
+        document.getElementById('gemstoneDetails').value = '';
+        document.getElementById('gemstoneQty').value = '';
+        document.getElementById('gemstonePrice').value = '';
+        document.getElementById('gemstoneMarkup').value = '2';
+        document.getElementById('laborHours').value = '';
+        document.getElementById('laborRate').value = '';
+        document.getElementById('serviceFees').value = '';
+        document.getElementById('shippingCost').value = '';
+        document.getElementById('taxRate').value = '';
+        document.getElementById('usdToCadMarkup').value = '';
+        document.getElementById('notes').value = '';
+        document.getElementById('materialsTotal').innerText = '$0.00';
+        document.getElementById('gemstonesTotal').innerText = '$0.00';
+        document.getElementById('laborTotal').innerText = '$0.00';
+        document.getElementById('subtotal').innerText = '$0.00';
+        document.getElementById('grandTotal').innerText = '$0.00';
+        document.getElementById('grandTotalCAD').innerText = '$0.00 CAD';
+    }
+</script>
+
+</body>
+</html>
